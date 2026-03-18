@@ -29,21 +29,21 @@ export default function QualificationsPage() {
   return (
     <div>
       <h1 className="text-3xl font-bold text-gray-900 mb-6">
-        All Certifications
+        資格一覧
       </h1>
 
       <input
         type="text"
-        placeholder="Search certifications..."
+        placeholder="資格名で検索..."
         value={search}
         onChange={(e) => setSearch(e.target.value)}
         className="w-full border border-gray-300 rounded-lg px-4 py-3 mb-6 focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white"
       />
 
       {loading ? (
-        <p className="text-gray-500">Loading...</p>
+        <p className="text-gray-500">読み込み中...</p>
       ) : filtered.length === 0 ? (
-        <p className="text-gray-500">No certifications found.</p>
+        <p className="text-gray-500">該当する資格が見つかりません。</p>
       ) : (
         <div className="space-y-3">
           {filtered.map((q) => (
@@ -53,7 +53,7 @@ export default function QualificationsPage() {
               className="block bg-white border border-gray-200 rounded-lg p-4 hover:shadow-md transition"
             >
               <h2 className="font-semibold text-gray-800">{q.name}</h2>
-              <p className="text-sm text-blue-600 mt-1">View details →</p>
+              <p className="text-sm text-blue-600 mt-1">詳細を見る →</p>
             </Link>
           ))}
         </div>

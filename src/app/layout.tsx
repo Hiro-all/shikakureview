@@ -15,7 +15,7 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "Shikaku Review",
-  description: "View and submit reviews about professional certifications",
+  description: "資格のリアルなレビューを閲覧・投稿できるサービス",
 };
 
 export default function RootLayout({
@@ -24,7 +24,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="ja">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen`}
       >
@@ -38,13 +38,13 @@ export default function RootLayout({
                 href="/qualifications"
                 className="text-gray-600 hover:text-blue-600 transition"
               >
-                Certifications
+                資格一覧
               </Link>
               <Link
                 href="/reviews/new"
                 className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition"
               >
-                Write a Review
+                レビューを書く
               </Link>
             </nav>
           </div>

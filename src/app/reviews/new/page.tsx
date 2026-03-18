@@ -62,11 +62,11 @@ function ReviewForm() {
     setError("");
 
     if (!qualificationId) {
-      setError("Please select a certification.");
+      setError("資格を選択してください。");
       return;
     }
     if (!studyHours || Number(studyHours) <= 0) {
-      setError("Please enter valid study hours.");
+      setError("正しい勉強時間を入力してください。");
       return;
     }
 
@@ -83,7 +83,7 @@ function ReviewForm() {
     });
 
     if (insertError) {
-      setError("Failed to submit review. Please try again.");
+      setError("レビューの投稿に失敗しました。もう一度お試しください。");
       setSubmitting(false);
       return;
     }
@@ -105,7 +105,7 @@ function ReviewForm() {
       {/* Certification */}
       <div>
         <label className="block text-sm font-medium text-gray-700 mb-1">
-          Certification <span className="text-red-500">*</span>
+          資格 <span className="text-red-500">*</span>
         </label>
         <select
           value={qualificationId}
@@ -113,7 +113,7 @@ function ReviewForm() {
           className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white"
           required
         >
-          <option value="">Select a certification</option>
+          <option value="">資格を選択してください</option>
           {qualifications.map((q) => (
             <option key={q.id} value={q.id}>
               {q.name}
@@ -125,13 +125,13 @@ function ReviewForm() {
       {/* Study Hours */}
       <div>
         <label className="block text-sm font-medium text-gray-700 mb-1">
-          Study Hours <span className="text-red-500">*</span>
+          勉強時間 <span className="text-red-500">*</span>
         </label>
         <input
           type="number"
           value={studyHours}
           onChange={(e) => setStudyHours(e.target.value)}
-          placeholder="e.g. 100"
+          placeholder="例: 100"
           min="1"
           className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white"
           required
@@ -141,13 +141,13 @@ function ReviewForm() {
       {/* Study Period */}
       <div>
         <label className="block text-sm font-medium text-gray-700 mb-1">
-          Study Period
+          勉強期間
         </label>
         <input
           type="text"
           value={studyPeriod}
           onChange={(e) => setStudyPeriod(e.target.value)}
-          placeholder="e.g. 3 months"
+          placeholder="例: 3ヶ月"
           className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white"
         />
       </div>
@@ -155,7 +155,7 @@ function ReviewForm() {
       {/* Difficulty */}
       <div>
         <label className="block text-sm font-medium text-gray-700 mb-1">
-          Difficulty <span className="text-red-500">*</span>
+          難易度 <span className="text-red-500">*</span>
         </label>
         <StarInput value={difficulty} onChange={setDifficulty} />
       </div>
@@ -163,7 +163,7 @@ function ReviewForm() {
       {/* Usefulness */}
       <div>
         <label className="block text-sm font-medium text-gray-700 mb-1">
-          Usefulness <span className="text-red-500">*</span>
+          実用度 <span className="text-red-500">*</span>
         </label>
         <StarInput value={usefulness} onChange={setUsefulness} />
       </div>
@@ -171,13 +171,13 @@ function ReviewForm() {
       {/* Attempts */}
       <div>
         <label className="block text-sm font-medium text-gray-700 mb-1">
-          Number of Attempts
+          受験回数
         </label>
         <input
           type="number"
           value={attempts}
           onChange={(e) => setAttempts(e.target.value)}
-          placeholder="e.g. 1"
+          placeholder="例: 1"
           min="1"
           className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white"
         />
@@ -186,13 +186,13 @@ function ReviewForm() {
       {/* Comment */}
       <div>
         <label className="block text-sm font-medium text-gray-700 mb-1">
-          Comment
+          コメント
         </label>
         <textarea
           value={comment}
           onChange={(e) => setComment(e.target.value)}
           rows={4}
-          placeholder="Share your experience..."
+          placeholder="あなたの体験を共有してください..."
           className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white resize-none"
         />
       </div>
@@ -202,7 +202,7 @@ function ReviewForm() {
         disabled={submitting}
         className="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition disabled:opacity-50 disabled:cursor-not-allowed"
       >
-        {submitting ? "Submitting..." : "Submit Review"}
+        {submitting ? "投稿中..." : "レビューを投稿"}
       </button>
     </form>
   );
@@ -211,8 +211,8 @@ function ReviewForm() {
 export default function NewReviewPage() {
   return (
     <div>
-      <h1 className="text-3xl font-bold text-gray-900 mb-6">Write a Review</h1>
-      <Suspense fallback={<p className="text-gray-500">Loading form...</p>}>
+      <h1 className="text-3xl font-bold text-gray-900 mb-6">レビューを書く</h1>
+      <Suspense fallback={<p className="text-gray-500">フォームを読み込み中...</p>}>
         <ReviewForm />
       </Suspense>
     </div>

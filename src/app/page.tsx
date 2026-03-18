@@ -37,7 +37,7 @@ export default function HomePage() {
   }, []);
 
   if (loading) {
-    return <p className="text-center text-gray-500 py-16">Loading...</p>;
+    return <p className="text-center text-gray-500 py-16">読み込み中...</p>;
   }
 
   return (
@@ -48,20 +48,20 @@ export default function HomePage() {
           Shikaku Review
         </h1>
         <p className="text-gray-500 text-lg mb-6">
-          Real reviews for professional certifications
+          資格のリアルなレビューを閲覧・投稿
         </p>
         <Link
           href="/qualifications"
           className="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition text-lg"
         >
-          Browse Certifications
+          資格を探す
         </Link>
       </section>
 
       {/* Popular Certifications */}
       <section>
         <h2 className="text-2xl font-bold text-gray-900 mb-4">
-          Popular Certifications
+          人気の資格
         </h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {qualifications.map((q) => (
@@ -71,7 +71,7 @@ export default function HomePage() {
               className="bg-white border border-gray-200 rounded-lg p-4 hover:shadow-md transition block"
             >
               <h3 className="font-semibold text-gray-800">{q.name}</h3>
-              <p className="text-sm text-blue-600 mt-1">View details →</p>
+              <p className="text-sm text-blue-600 mt-1">詳細を見る →</p>
             </Link>
           ))}
         </div>
@@ -80,7 +80,7 @@ export default function HomePage() {
       {/* Recent Reviews */}
       <section>
         <h2 className="text-2xl font-bold text-gray-900 mb-4">
-          Recent Reviews
+          最新のレビュー
         </h2>
         {recentReviews.length > 0 ? (
           <div className="space-y-4">
@@ -101,12 +101,12 @@ export default function HomePage() {
                   </span>
                 </div>
                 <div className="flex gap-6 text-sm text-gray-600 mb-2">
-                  <span>Study: {review.study_hours}h</span>
+                  <span>勉強時間: {review.study_hours}時間</span>
                   <span>
-                    Difficulty: <Stars count={review.difficulty} />
+                    難易度: <Stars count={review.difficulty} />
                   </span>
                   <span>
-                    Usefulness: <Stars count={review.usefulness} />
+                    実用度: <Stars count={review.usefulness} />
                   </span>
                 </div>
                 {review.comment && (
@@ -116,7 +116,7 @@ export default function HomePage() {
             ))}
           </div>
         ) : (
-          <p className="text-gray-500">No reviews yet. Be the first!</p>
+          <p className="text-gray-500">まだレビューがありません。最初のレビューを投稿しましょう！</p>
         )}
       </section>
     </div>

@@ -41,11 +41,11 @@ export default function DetailClient() {
   }, [id]);
 
   if (loading) {
-    return <p className="text-center text-gray-500 py-16">Loading...</p>;
+    return <p className="text-center text-gray-500 py-16">読み込み中...</p>;
   }
 
   if (!qualification) {
-    return <p className="text-center text-gray-500 py-16">Certification not found.</p>;
+    return <p className="text-center text-gray-500 py-16">資格が見つかりません。</p>;
   }
 
   const reviewCount = reviewList.length;
@@ -78,19 +78,19 @@ export default function DetailClient() {
       {/* Stats */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
         <div className="bg-white border border-gray-200 rounded-lg p-5 text-center">
-          <p className="text-sm text-gray-500 mb-1">Avg Study Hours</p>
+          <p className="text-sm text-gray-500 mb-1">平均勉強時間</p>
           <p className="text-3xl font-bold text-blue-600">
-            {reviewCount > 0 ? `${avgStudyHours}h` : "—"}
+            {reviewCount > 0 ? `${avgStudyHours}時間` : "—"}
           </p>
         </div>
         <div className="bg-white border border-gray-200 rounded-lg p-5 text-center">
-          <p className="text-sm text-gray-500 mb-1">Difficulty</p>
+          <p className="text-sm text-gray-500 mb-1">難易度</p>
           <p className="text-2xl">
             {reviewCount > 0 ? <Stars count={avgDifficulty} /> : "—"}
           </p>
         </div>
         <div className="bg-white border border-gray-200 rounded-lg p-5 text-center">
-          <p className="text-sm text-gray-500 mb-1">Usefulness</p>
+          <p className="text-sm text-gray-500 mb-1">実用度</p>
           <p className="text-2xl">
             {reviewCount > 0 ? <Stars count={avgUsefulness} /> : "—"}
           </p>
@@ -103,15 +103,15 @@ export default function DetailClient() {
           href={`/reviews/new?qualification_id=${id}`}
           className="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition inline-block"
         >
-          Write a Review
+          レビューを書く
         </Link>
         <span className="ml-3 text-gray-500 text-sm">
-          {reviewCount} review{reviewCount !== 1 ? "s" : ""}
+          {reviewCount}件のレビュー
         </span>
       </div>
 
       {/* Reviews List */}
-      <h2 className="text-2xl font-bold text-gray-900 mb-4">Reviews</h2>
+      <h2 className="text-2xl font-bold text-gray-900 mb-4">レビュー一覧</h2>
       {reviewList.length > 0 ? (
         <div className="space-y-4">
           {reviewList.map((review) => (
@@ -121,18 +121,18 @@ export default function DetailClient() {
             >
               <div className="flex flex-wrap gap-4 text-sm text-gray-600 mb-3">
                 <span className="font-medium">
-                  Study: {review.study_hours}h
+                  勉強時間: {review.study_hours}時間
                 </span>
                 {review.study_period && (
-                  <span>Period: {review.study_period}</span>
+                  <span>勉強期間: {review.study_period}</span>
                 )}
                 <span>
-                  Difficulty: <Stars count={review.difficulty} />
+                  難易度: <Stars count={review.difficulty} />
                 </span>
                 <span>
-                  Usefulness: <Stars count={review.usefulness} />
+                  実用度: <Stars count={review.usefulness} />
                 </span>
-                {review.attempts && <span>Attempts: {review.attempts}</span>}
+                {review.attempts && <span>受験回数: {review.attempts}回</span>}
               </div>
               {review.comment && (
                 <p className="text-gray-700">{review.comment}</p>
@@ -145,7 +145,7 @@ export default function DetailClient() {
         </div>
       ) : (
         <p className="text-gray-500">
-          No reviews yet. Be the first to write one!
+          まだレビューがありません。最初のレビューを投稿しましょう！
         </p>
       )}
     </div>
