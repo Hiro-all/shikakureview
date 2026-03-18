@@ -1,65 +1,124 @@
-import Image from "next/image";
+"use client";
 
-export default function Home() {
+import { supabase } from "@/lib/supabase";
+import { Qualification, ReviewWithQualification } from "@/lib/types";
+import Link from "next/link";
+import { useEffect, useState } from "react";
+
+function Stars({ count }: { count: number }) {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
+    <span className="text-yellow-500">
+      {"★".repeat(count)}
+      {"☆".repeat(5 - count)}
+    </span>
+  );
+}
+
+export default function HomePage() {
+  const [qualifications, setQualifications] = useState<Qualification[]>([]);
+  const [recentReviews, setRecentReviews] = useState<ReviewWithQualification[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function fetchData() {
+      const [qualRes, revRes] = await Promise.all([
+        supabase.from("qualifications").select("*").order("name"),
+        supabase
+          .from("reviews")
+          .select("*, qualifications(id, name)")
+          .order("created_at", { ascending: false })
+          .limit(5),
+      ]);
+      if (qualRes.data) setQualifications(qualRes.data as Qualification[]);
+      if (revRes.data) setRecentReviews(revRes.data as ReviewWithQualification[]);
+      setLoading(false);
+    }
+    fetchData();
+  }, []);
+
+  if (loading) {
+    return <p className="text-center text-gray-500 py-16">Loading...</p>;
+  }
+
+  return (
+    <div className="space-y-10">
+      {/* Hero */}
+      <section className="text-center py-8">
+        <h1 className="text-4xl font-bold text-gray-900 mb-3">
+          Shikaku Review
+        </h1>
+        <p className="text-gray-500 text-lg mb-6">
+          Real reviews for professional certifications
+        </p>
+        <Link
+          href="/qualifications"
+          className="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition text-lg"
+        >
+          Browse Certifications
+        </Link>
+      </section>
+
+      {/* Popular Certifications */}
+      <section>
+        <h2 className="text-2xl font-bold text-gray-900 mb-4">
+          Popular Certifications
+        </h2>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          {qualifications.map((q) => (
+            <Link
+              key={q.id}
+              href={`/qualifications/${q.id}`}
+              className="bg-white border border-gray-200 rounded-lg p-4 hover:shadow-md transition block"
             >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
+              <h3 className="font-semibold text-gray-800">{q.name}</h3>
+              <p className="text-sm text-blue-600 mt-1">View details →</p>
+            </Link>
+          ))}
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
+      </section>
+
+      {/* Recent Reviews */}
+      <section>
+        <h2 className="text-2xl font-bold text-gray-900 mb-4">
+          Recent Reviews
+        </h2>
+        {recentReviews.length > 0 ? (
+          <div className="space-y-4">
+            {recentReviews.map((review) => (
+              <div
+                key={review.id}
+                className="bg-white border border-gray-200 rounded-lg p-4"
+              >
+                <div className="flex items-center justify-between mb-2">
+                  <Link
+                    href={`/qualifications/${review.qualification_id}`}
+                    className="font-semibold text-blue-600 hover:underline"
+                  >
+                    {review.qualifications?.name}
+                  </Link>
+                  <span className="text-sm text-gray-400">
+                    {new Date(review.created_at).toLocaleDateString()}
+                  </span>
+                </div>
+                <div className="flex gap-6 text-sm text-gray-600 mb-2">
+                  <span>Study: {review.study_hours}h</span>
+                  <span>
+                    Difficulty: <Stars count={review.difficulty} />
+                  </span>
+                  <span>
+                    Usefulness: <Stars count={review.usefulness} />
+                  </span>
+                </div>
+                {review.comment && (
+                  <p className="text-gray-700 text-sm">{review.comment}</p>
+                )}
+              </div>
+            ))}
+          </div>
+        ) : (
+          <p className="text-gray-500">No reviews yet. Be the first!</p>
+        )}
+      </section>
     </div>
   );
 }
